@@ -1,0 +1,5 @@
+aws_region = "us-east-1"
+project_name = "cloudaws-task-manager"
+instance_type = "t3.micro"
+key_name     = "your-ec2-key-pair"
+allowed_ssh_cidrs = ["203.0.113.10/32"]
