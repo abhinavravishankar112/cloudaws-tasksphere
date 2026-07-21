@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tasksphere-config
+  namespace: tasksphere
+data:
+  NODE_ENV: production
+  PORT: '3000'
+  LOG_LEVEL: info
+  SWAGGER_ENABLED: 'true'
+  CORS_ORIGIN: https://api.example.com
+  JWT_EXPIRES_IN: 1d
