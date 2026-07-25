@@ -31,5 +31,4 @@ services:
 databases:
   - name: tasksphere-db
     databaseName: task_manager
-    user: postgres
     plan: free
