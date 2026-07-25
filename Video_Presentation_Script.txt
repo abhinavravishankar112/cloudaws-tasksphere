@@ -1,0 +1,127 @@
+================================================================================
+          VIDEO PRESENTATION SCRIPT: CLOUD-NATIVE TASKSPHERE API
+================================================================================
+Target Duration: 5 - 7 Minutes
+Topic: Code Architecture, Database Design, Containerization, AWS & K8s Deployment
+Format: Screencast (VS Code + Terminal + AWS Console / GitHub Actions) + Voiceover
+================================================================================
+
+--------------------------------------------------------------------------------
+SCENE 1: INTRODUCTION & PROJECT OVERVIEW (0:00 - 0:45)
+--------------------------------------------------------------------------------
+[Visual / Screen Action]
+- Display Title Screen: "Cloud-Native TaskSphere API - Code Architecture & Deployment Walkthrough"
+- Show README.md in VS Code highlighting tech stack badges:
+  Node.js, Express.js, PostgreSQL, Prisma ORM, Docker, Kubernetes, Terraform, AWS EC2, GitHub Actions.
+
+[Voiceover / Audio Script]
+"Hello everyone! Today, I am excited to present the TaskSphere API—a production-ready, cloud-native RESTful task management backend built with modern software architecture and DevOps best practices.
+
+Our primary goal for this project was to build not just a clean, scalable Node.js backend, but a fully automated, resilient deployment pipeline targeting cloud infrastructure on AWS and Kubernetes."
+
+
+--------------------------------------------------------------------------------
+SCENE 2: BACKEND ARCHITECTURE & CORE CODE (0:45 - 1:50)
+--------------------------------------------------------------------------------
+[Visual / Screen Action]
+- Open VS Code explorer and expand src/ folder.
+- Highlight subfolders: controllers/, services/, middleware/, routes/, validators/, models/.
+- Open src/app.js and src/middleware/ to show JWT validation and error handlers.
+- Briefly show Swagger UI (http://localhost:3000/api-docs) or src/config/swagger.js.
+
+[Voiceover / Audio Script]
+"Let's start by taking a look at the core codebase structure inside the src directory. We follow a strict multi-tiered layered architecture separating concerns into routes, controllers, business services, and database access logic.
+
+In app.js, we configure security middleware, CORS, rate-limiting, and express-validator for strict payload validation. Requests are authenticated using JWT tokens validated by custom auth middleware on protected endpoints.
+
+We have also integrated interactive Swagger/OpenAPI documentation, allowing client developers to test API endpoints seamlessly."
+
+
+--------------------------------------------------------------------------------
+SCENE 3: DATABASE MODELING WITH PRISMA & POSTGRESQL (1:50 - 2:30)
+--------------------------------------------------------------------------------
+[Visual / Screen Action]
+- Open prisma/schema.prisma.
+- Highlight User and Task models.
+- Point to TaskPriority and TaskStatus enums, plus @@index definitions.
+
+[Voiceover / Audio Script]
+"For persistent data storage, we utilize PostgreSQL paired with Prisma ORM. Here in our Prisma schema, we define two main entities: User and Task.
+
+Tasks support custom enums for priority (from LOW to URGENT) and status (from TODO to DONE). Notice our database indexing strategies on userId, status, priority, and dueDate to ensure rapid lookup performance even under high traffic."
+
+
+--------------------------------------------------------------------------------
+SCENE 4: CONTAINERIZATION & LOCAL STACK (2:30 - 3:15)
+--------------------------------------------------------------------------------
+[Visual / Screen Action]
+- Open Dockerfile in VS Code.
+- Highlight multi-stage build: node:20-alpine AS deps, AS builder, AS runner.
+- Point out non-root user creation: USER nodejs.
+- Open docker-compose.yml and run `docker compose up` in terminal.
+
+[Voiceover / Audio Script]
+"Moving to containerization, we wrote an optimized multi-stage Dockerfile. By separating dependency resolution, Prisma client generation, and final execution, we produce ultra-lightweight Alpine images. For security compliance, the container executes under a non-root nodejs user context.
+
+For local development, running `docker compose up` provisions both the API container and a PostgreSQL database with health checks configured out of the box."
+
+
+--------------------------------------------------------------------------------
+SCENE 5: CLOUD INFRASTRUCTURE WITH TERRAFORM (3:15 - 4:00)
+--------------------------------------------------------------------------------
+[Visual / Screen Action]
+- Open terraform/main.tf in VS Code.
+- Highlight aws_instance resource, security groups (ports 22, 80, 443, 3000), and Elastic IP.
+- Show user-data.sh.tpl script.
+
+[Voiceover / Audio Script]
+"To deploy this to the cloud predictably, we use Infrastructure as Code via Terraform. In terraform/main.tf, we provision an AWS EC2 instance, construct VPC security groups for ports 22, 80, 443, and 3000, and configure elastic IPs.
+
+Our cloud-init user-data script automatically bootstraps the instance upon provisioning—installing Docker, Nginx reverse proxy, and system dependencies."
+
+
+--------------------------------------------------------------------------------
+SCENE 6: CONTAINER ORCHESTRATION WITH KUBERNETES (4:00 - 4:45)
+--------------------------------------------------------------------------------
+[Visual / Screen Action]
+- Open k8s/ folder showing deployment.yaml, service.yaml, ingress.yaml, and hpa.yaml.
+- Highlight livenessProbe and readinessProbe in deployment.yaml.
+- Highlight horizontal autoscaling rules in hpa.yaml.
+
+[Voiceover / Audio Script]
+"In addition to single-server VM deployments, we have authored Kubernetes manifests inside the k8s directory. This includes zero-downtime deployments with liveness and readiness probes pointing to /api/v1/health.
+
+We have also configured horizontal pod autoscaling in hpa.yaml to dynamically scale pods from 2 up to 10 replicas based on CPU and memory utilization thresholds."
+
+
+--------------------------------------------------------------------------------
+SCENE 7: CI/CD PIPELINE & AUTOMATED DEPLOYMENT (4:45 - 5:30)
+--------------------------------------------------------------------------------
+[Visual / Screen Action]
+- Open .github/workflows/ci-cd.yml.
+- Highlight jobs: build & test (Jest), Docker image build, SSH deployment to AWS EC2.
+
+[Voiceover / Audio Script]
+"Finally, let me show you our CI/CD pipeline built with GitHub Actions. On every pull request and push to main, our workflow executes automated linting and integration tests using Jest.
+
+Once tests pass, it builds the production Docker image and safely deploys updates to our AWS EC2 server over SSH using encrypted secrets."
+
+
+--------------------------------------------------------------------------------
+SCENE 8: CONCLUSION & OUTRO (5:30 - 6:00)
+--------------------------------------------------------------------------------
+[Visual / Screen Action]
+- Show API health endpoint in browser: GET http://localhost:3000/api/v1/health
+- Display End Slide: "Thank You! - Q & A"
+
+[Voiceover / Audio Script]
+"In summary, TaskSphere API demonstrates a complete, production-grade cloud backend—ranging from clean modular Node.js architecture to containerization, Terraform infrastructure provisioning, Kubernetes orchestration, and automated continuous deployment.
+
+Thank you for watching! I welcome any questions."
+
+================================================================================
+RECORDING & PRODUCTION TIPS:
+1. Font Size: Set VS Code font size to 16px - 18px for clear recording clarity.
+2. Terminal Setup: Run `npm test` and `docker compose up` beforehand to prime cache.
+3. Teleprompter: Keep this script open side-by-side or on a mobile screen while recording.
+================================================================================
