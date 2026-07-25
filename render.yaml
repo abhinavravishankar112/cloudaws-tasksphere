@@ -8,15 +8,13 @@ services:
     plan: free
     region: singapore # or oregon, frankfurt, ohio
     buildCommand: npm install && npx prisma generate
-    startCommand: node scripts/wait-for-db.js && npx prisma db push && npm start
-    healthCheckPath: /api/v1/health/live
+    startCommand: npm start
+    healthCheckPath: /
     envVars:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        fromDatabase:
-          name: tasksphere-db
-          property: connectionString
+        value: postgresql://postgres:postgres@localhost:5432/task_manager
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRES_IN
@@ -27,8 +25,3 @@ services:
         value: info
       - key: SWAGGER_ENABLED
         value: "true"
-
-databases:
-  - name: tasksphere-db
-    databaseName: task_manager
-    plan: free

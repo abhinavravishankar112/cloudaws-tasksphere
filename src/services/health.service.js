@@ -6,7 +6,7 @@ async function ensureDatabaseReady() {
     await prisma.$queryRaw`SELECT 1`;
     return true;
   } catch {
-    throw new AppError('Database is not ready', 503);
+    return false;
   }
 }
 

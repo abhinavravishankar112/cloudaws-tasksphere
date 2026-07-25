@@ -5,6 +5,7 @@ function buildHealthResponse(mode) {
   return {
     success: true,
     status: 'ok',
+    message: 'API connected successfully',
     mode,
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
@@ -16,10 +17,10 @@ const live = asyncHandler(async (_req, res) => {
 });
 
 const ready = asyncHandler(async (_req, res) => {
-  await healthService.ensureDatabaseReady();
+  const isDbReady = await healthService.ensureDatabaseReady();
   res.status(200).json({
     ...buildHealthResponse('ready'),
-    database: 'connected'
+    database: isDbReady ? 'connected' : 'disconnected'
   });
 });
 

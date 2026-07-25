@@ -28,7 +28,9 @@ function createApp() {
   app.get('/', (req, res) => {
     res.status(200).json({
       success: true,
-      message: 'Cloud-Native TaskSphere API'
+      message: 'API connected successfully',
+      service: 'Cloud-Native TaskSphere API',
+      status: 'online'
     });
   });
 
