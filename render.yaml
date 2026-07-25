@@ -1,0 +1,35 @@
+# Render Blueprint configuration for Cloud-Native TaskSphere API
+# See https://render.com/docs/blueprint-spec for details.
+
+services:
+  - type: web
+    name: tasksphere-api
+    runtime: node
+    plan: free
+    region: singapore # or oregon, frankfurt, ohio
+    buildCommand: npm install && npm run build
+    startCommand: npx prisma migrate deploy && npm start
+    healthCheckPath: /api/v1/health/live
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tasksphere-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: LOG_LEVEL
+        value: info
+      - key: SWAGGER_ENABLED
+        value: "true"
+
+databases:
+  - name: tasksphere-db
+    databaseName: task_manager
+    user: postgres
+    plan: free
