@@ -8,7 +8,7 @@ services:
     plan: free
     region: singapore # or oregon, frankfurt, ohio
     buildCommand: npm install && npx prisma generate
-    startCommand: npx prisma db push && npm start
+    startCommand: node scripts/wait-for-db.js && npx prisma db push && npm start
     healthCheckPath: /api/v1/health/live
     envVars:
       - key: NODE_ENV
